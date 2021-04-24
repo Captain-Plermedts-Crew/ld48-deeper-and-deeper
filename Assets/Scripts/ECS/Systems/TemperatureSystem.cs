@@ -27,7 +27,6 @@ public class TemperatureSystem : SystemBase {
         {
             // decrement by time elapsed for one frame
             tempComponent.temperature -= tempComponent.tempLossRate * Time.DeltaTime;   
-
             
             if (tempComponent.temperature < freezeTemp){
                 if (!HasComponent<FrozenTag>(entity)){
@@ -55,7 +54,6 @@ public class TemperatureSystem : SystemBase {
         }).Run();
         ECBS.AddJobHandleForProducer(Dependency);
     }
-
 }
 
 // public class TemperatureSystem : JobComponentSystem {
