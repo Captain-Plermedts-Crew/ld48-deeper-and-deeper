@@ -744,8 +744,8 @@ Light:
   m_Type: 2
   m_Shape: 0
   m_Color: {r: 0.7830189, g: 0.45823336, b: 0.12927197, a: 1}
-  m_Intensity: 5
-  m_Range: 10
+  m_Intensity: 8
+  m_Range: 20
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
   m_CookieSize: 10
@@ -806,6 +806,7 @@ GameObject:
   - component: {fileID: 1293844239}
   - component: {fileID: 1293844238}
   - component: {fileID: 1293844237}
+  - component: {fileID: 1293844240}
   m_Layer: 0
   m_Name: Torch
   m_TagString: Untagged
@@ -891,6 +892,22 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1293844235}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1293844240
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1293844235}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e997c19af28c7b34e962ccdcaa98f7d3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rateOfFire: 0.15
+  bulletPrefab: {fileID: 7842236715461585926, guid: 611e97ac26e719747b66142eb8435108,
+    type: 3}
+  torchTransform: {fileID: 581556249}
 --- !u!1 &1338318052
 GameObject:
   m_ObjectHideFlags: 0
