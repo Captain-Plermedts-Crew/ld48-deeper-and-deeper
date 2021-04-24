@@ -29,15 +29,24 @@ public class FireTorch : MonoBehaviour
     private bool isFireButtonDown;
     public bool IsFireButtonDown { get { return isFireButtonDown; } set { isFireButtonDown = value; } }
 
+    private BlobAssetStore blobAssetStore;
+
     // Start is called before the first frame update
     void Start()
     {   
         // get reference to current EntityManager
         entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
 
+        blobAssetStore = new BlobAssetStore();
         // create entity prefab from the game object prefab, using default conversion settings
-        var settings = GameObjectConversionSettings.FromWorld(World.DefaultGameObjectInjectionWorld, null);
+        var settings = GameObjectConversionSettings.FromWorld(World.DefaultGameObjectInjectionWorld, blobAssetStore);
         bulletEntityPrefab = GameObjectConversionUtility.ConvertGameObjectHierarchy(bulletPrefab, settings);
+    } 
+    private void OnDestroy()
+    {
+        // Dispose of the BlobAssetStore, else we're get a message:
+        // A Native Collection has not been disposed, resulting in a memory leak.
+        if (blobAssetStore != null) { blobAssetStore.Dispose(); }
     }
     
     
