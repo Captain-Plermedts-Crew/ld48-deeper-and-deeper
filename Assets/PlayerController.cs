@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+
     public float movementSpeed = 1f;
     Vector3 movement;           //Movement Axis
     public Rigidbody rigidbody;      //Player Rigidbody Component
@@ -11,7 +12,6 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
     }
 
     // Update is called once per frame
