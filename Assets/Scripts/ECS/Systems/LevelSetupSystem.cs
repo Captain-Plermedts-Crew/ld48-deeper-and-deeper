@@ -9,7 +9,7 @@ using System;
 using Random = Unity.Mathematics.Random;
 
 // [UpdateInGroup(typeof(InitializationSystemGroup))]
-public class SetupPlayer : SystemBase
+public class LevelSetupSystem : SystemBase
 {
     private Random r = new Random(123);
     private EntityManager entityManager;
