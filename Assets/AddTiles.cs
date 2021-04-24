@@ -28,6 +28,10 @@ public class AddTiles : MonoBehaviour
         tileEntityPrefab = GameObjectConversionUtility.ConvertGameObjectHierarchy(tilePreFab, settings);
         Debug.Log(tileEntityPrefab);
         buildFloor();
+        buildEastWestWall(-50f, 50f);
+        buildSouthNorthWall(-50f, 50f);
+        buildEastWestWall(-50f, -50f);
+        buildSouthNorthWall(-50f, -50f);
     }
     private void OnDestroy()
     {
@@ -44,25 +48,55 @@ public class AddTiles : MonoBehaviour
     }
 
     private void buildFloor(){
-        float x = -100.0f;
-        float z = -100.0f;
+        float x = -50.0f;
+        float z = -50.0f;
         
-        for (int i = 0; i < 100; i++){
+        for (int i = 0; i < 50; i++){
             x += 2.0f;
-            z = -100.0f;
-            for (int j = 0; j < 100; j++){
+            z = -50.0f;
+            for (int j = 0; j < 50; j++){
                 z += 2.0f;
-                Entity tile = entityManager.Instantiate(tileEntityPrefab);
-
-                entityManager.SetComponentData(tile, new Translation { 
-                    Value = new float3(x, -0.35f, z) 
-                });
-
-                entityManager.SetComponentData(tile, new Rotation { 
-                    Value = Quaternion.Euler(getNextNinety(), getNextNinety(), getNextNinety()) 
-                });
+                addTile(x, -0.35f, z);
             }            
         }
+    }
+
+    private void buildEastWestWall(float x, float z){
+        float y = -0.35f;
+
+        for (int i = 0; i < 50; i++){
+            x += 2.0f;
+            y = -0.35f;
+            for (int j = 0; j < 3; j++){
+                y += 2.0f;
+                addTile(x, y, z);
+            }            
+        }
+    }
+    private void buildSouthNorthWall(float x, float z){
+        float y = -0.35f;
+
+        for (int i = 0; i < 50; i++){
+            x += 2.0f;
+            y = -0.35f;
+            for (int j = 0; j < 3; j++){
+                y += 2.0f;
+                addTile(z, y, x);
+            }            
+        }
+    }
+
+    
+    private void addTile(float x, float y, float z){
+        Entity tile = entityManager.Instantiate(tileEntityPrefab);
+
+        entityManager.SetComponentData(tile, new Translation { 
+            Value = new float3(x, y, z) 
+        });
+
+        entityManager.SetComponentData(tile, new Rotation { 
+            Value = Quaternion.Euler(getNextNinety(), getNextNinety(), getNextNinety()) 
+        });
     }
 
     private float getNextNinety(){
