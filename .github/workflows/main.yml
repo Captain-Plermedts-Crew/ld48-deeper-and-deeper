@@ -109,4 +109,4 @@ jobs:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
         uses: Ilshidur/action-discord@master
         with:
-          args: 'The project {{ EVENT_PAYLOAD.repository.full_name }} has been deployed. View it on https://pmuessig.github.io/2d_platformer_test'
+          args: 'The project {{ EVENT_PAYLOAD.repository.full_name }} has been deployed. View it on https://Captain-Plermedts-Crew.github.io/ld48-deeper-and-deeper'
