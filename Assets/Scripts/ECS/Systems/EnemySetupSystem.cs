@@ -73,7 +73,7 @@ public class EnemySetupSystem : SystemBase
         entityManager.SetComponentData(entity, new Rotation { Value = orientation });
 
         //custom stuff
-        entityManager.AddComponentData(entity, new Temperature{tempLossRate=1f, temperature=0f});   
+        entityManager.AddComponentData(entity, new Temperature{tempLossRate=1f, temperature=20f});   
 
         //RenderMesh & Bounds   
         entityManager.AddSharedComponentData(entity, new RenderMesh 
