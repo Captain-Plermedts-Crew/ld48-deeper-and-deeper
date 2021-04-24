@@ -11,7 +11,6 @@ public class Player_Movement : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        rigidbody = this.GetComponent<Rigidbody2D>();
     }
 
     void FixedUpdate() 
