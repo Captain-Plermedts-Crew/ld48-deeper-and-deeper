@@ -35,24 +35,7 @@ public class EnemySetupSystem : SystemBase
             entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
 
             frozenEnemyArchetype = EnemySetupSystem.getFrozenEntityArchetype(entityManager);
-
-
-            createLotsOfEnemies();
-
-            // createSingleEnemy(
-            //     entityManager,
-            //     frozenEnemyArchetype,
-            //     float3.zero, //position
-            //     Quaternion.Euler(0,r.NextFloat(0,360),0), //orientation
-            //     cubeMesh,
-            //     iceMaterial);
-            // createSingleEnemy(
-            //     entityManager,
-            //     float3.zero, //position
-            //     Quaternion.Euler(0,r.NextFloat(0,360),0), //orientation
-            //     cubeMesh,
-            //     iceMaterial);
-            
+            createLotsOfEnemies();            
     }
       
     protected override void OnUpdate()
