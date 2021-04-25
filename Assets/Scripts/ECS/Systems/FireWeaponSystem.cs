@@ -45,7 +45,7 @@ public class FireWeaponSystem : SystemBase
 
                     weapon.shotTimer = 0f;
 
-                    float3 position = math.transform(localToWorld.Value, new float3(0, 0, 5));
+                    float3 position = math.transform(localToWorld.Value, new float3(0, 0, 1));
 
                     var rot = Unity.Physics.Math.DecomposeRigidBodyOrientation(localToWorld.Value);
 
