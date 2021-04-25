@@ -7,4 +7,5 @@ using UnityEngine;
 public struct UserInputData : IComponentData
 {
     public float2 Move;
+    public bool IsFiring;
 }

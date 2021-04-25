@@ -397,6 +397,7 @@ MonoBehaviour:
   Move:
     x: 0
     y: 0
+  IsFiring: 0
 --- !u!114 &-9158945799329290825
 MonoBehaviour:
   m_ObjectHideFlags: 0

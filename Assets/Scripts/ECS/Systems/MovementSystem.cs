@@ -4,22 +4,6 @@ using Unity.Mathematics;
 using Unity.Jobs;
 using UnityEngine;
 
-public partial class GatherInputSystem : SystemBase
-{
-    protected override void OnUpdate()
-    {
-        var horizontal = Input.GetAxis("Horizontal");
-        var vertical = Input.GetAxis("Vertical");
-
-        Entities
-            .WithName("GatherInput")
-            .ForEach((ref UserInputData inputData) =>
-            {
-                inputData.Move = new float2(horizontal, vertical);
-            }).ScheduleParallel();
-    }
-}
-
 [UpdateAfter(typeof(GatherInputSystem))]
 public class MovePlayerSystem : SystemBase
 {
