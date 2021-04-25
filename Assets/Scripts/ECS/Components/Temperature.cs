@@ -4,6 +4,6 @@ using Unity.Entities;
 [GenerateAuthoringComponent]
 public struct Temperature : IComponentData
 {
-    public float tempLossRate;
-    public float temperature;
+    public float Rate;
+    public float Value;
 }

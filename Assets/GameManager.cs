@@ -54,7 +54,7 @@ public class GameManager : MonoBehaviour
 
         entityManager.SetComponentData(playerEntity, new Translation { Value = new float3(0.0f, 2.1f, 0.0f) });
         //entityManager.SetComponentData(playerEntity, new Rotation { Value = new quaternion(0, 0, 0, 0) });
-        entityManager.SetComponentData(playerEntity, new Temperature{tempLossRate=0f, temperature=98.6f});   
+        entityManager.SetComponentData(playerEntity, new Temperature{Rate=0f, Value=98.6f});   
     }
 
     private void OnDestroy()

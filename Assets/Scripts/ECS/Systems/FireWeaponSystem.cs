@@ -52,6 +52,8 @@ public class FireWeaponSystem : SystemBase
                     var entity = commandBuffer.Instantiate(bulletEntityPrefab);
                     commandBuffer.SetComponent(entity, new Translation { Value = position });
                     commandBuffer.SetComponent(entity, new Rotation { Value = rot });
+                    commandBuffer.SetComponent(entity, new Temperature { Value = 50 });
+
                 }
 
             })

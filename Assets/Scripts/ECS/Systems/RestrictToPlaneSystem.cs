@@ -10,6 +10,7 @@ public class RestrictToPlaneSystem : SystemBase
      protected override void OnUpdate(){
         Entities
             .WithAll<Translation, Rotation>()
+            .WithNone<EmberTag>()
             .ForEach((ref Translation pos, 
                 ref PhysicsVelocity physicsVelocity) =>
             {

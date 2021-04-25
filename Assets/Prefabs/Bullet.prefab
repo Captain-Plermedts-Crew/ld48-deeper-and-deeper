@@ -142,8 +142,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: beff83d93a9384e129d001b871201147, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tempLossRate: 0
-  temperature: 5
+  Rate: 0
+  Value: 0
 --- !u!108 &1720771729308073038
 Light:
   m_ObjectHideFlags: 0

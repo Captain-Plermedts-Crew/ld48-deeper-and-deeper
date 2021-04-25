@@ -19,7 +19,7 @@ public class LevelSetupSystem : SystemBase
             base.OnStartRunning();
             entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
 
-            createMouseEntity(entityManager);
+            // createMouseEntity(entityManager);
     }
       
     protected override void OnUpdate()
@@ -39,7 +39,7 @@ public class LevelSetupSystem : SystemBase
         
         entityManager.AddComponentData(mouseEntity, new Translation { Value = float3.zero });
         entityManager.AddComponentData(mouseEntity, new MouseTag{});  
-        entityManager.AddComponentData(mouseEntity, new Temperature{tempLossRate=1f, temperature=0f});      
+        entityManager.AddComponentData(mouseEntity, new Temperature{ Value = 0f });      
 
     }
 
