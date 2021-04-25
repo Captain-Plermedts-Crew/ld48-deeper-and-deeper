@@ -104,7 +104,6 @@ GameObject:
   - component: {fileID: 1216309450893101929}
   - component: {fileID: 1216309450893101930}
   - component: {fileID: 1216309450893101931}
-  - component: {fileID: 1216309450893101941}
   - component: {fileID: 3000548323207666807}
   - component: {fileID: 4586468018595013021}
   - component: {fileID: 5744703927999407328}
@@ -180,22 +179,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &1216309450893101941
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1216309450893101934}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e997c19af28c7b34e962ccdcaa98f7d3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  rateOfFire: 0.44
-  bulletPrefab: {fileID: 7842236715461585926, guid: 611e97ac26e719747b66142eb8435108,
-    type: 3}
-  torchTransform: {fileID: 8391966252240639994}
 --- !u!114 &3000548323207666807
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -222,7 +205,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf2c0ecd27ca0184890c7fedb8cb2fe0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rateOfFire: 0.44
+  rateOfFire: 0.5
   shotTimer: 0
 --- !u!114 &5744703927999407328
 MonoBehaviour:
