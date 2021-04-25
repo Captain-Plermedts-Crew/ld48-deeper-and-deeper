@@ -12,8 +12,6 @@ public class GameManager : MonoBehaviour
 
     public GameObject playerFollower;
 
-    private Transform player;
-    
     [SerializeField] TextMeshPro tempText;
 
     [SerializeField] private GameObject playerPreFab;
@@ -34,17 +32,6 @@ public class GameManager : MonoBehaviour
             Instance = this;
         }
 
-    }
-
-    // static methods to send messages to Entities
-    public static Vector3 GetPlayerPosition()
-    {
-        if (GameManager.Instance == null)
-        {
-            return Vector3.zero;
-        }
-
-        return (Instance.player != null) ? GameManager.Instance.player.position : Vector3.zero;
     }
 
     // Start is called before the first frame update
@@ -80,6 +67,5 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(GetPlayerPosition());
     }
 }
