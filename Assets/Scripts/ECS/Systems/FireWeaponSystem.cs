@@ -45,14 +45,14 @@ public class FireWeaponSystem : SystemBase
 
                     weapon.shotTimer = 0f;
 
-                    float3 position = math.transform(localToWorld.Value, new float3(0, 0, 1));
+                    float3 position = math.transform(localToWorld.Value, new float3(0, 0, 0));
 
                     var rot = Unity.Physics.Math.DecomposeRigidBodyOrientation(localToWorld.Value);
 
                     var entity = commandBuffer.Instantiate(bulletEntityPrefab);
                     commandBuffer.SetComponent(entity, new Translation { Value = position });
                     commandBuffer.SetComponent(entity, new Rotation { Value = rot });
-                    commandBuffer.SetComponent(entity, new Temperature { Value = 50 });
+                    commandBuffer.SetComponent(entity, new Temperature { Value = 100 });
 
                 }
 
