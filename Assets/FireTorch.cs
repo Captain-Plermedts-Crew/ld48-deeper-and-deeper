@@ -9,7 +9,7 @@ public class FireTorch : MonoBehaviour
     [Header("Specs")]
 
     // time between shots
-    [SerializeField] private float rateOfFire = 0.15f;
+    [SerializeField] private float rateOfFire = 0.0f;
 
     // GameObject prefab 
     [SerializeField] private GameObject bulletPrefab;
@@ -70,7 +70,7 @@ public class FireTorch : MonoBehaviour
         if (shotTimer >= rateOfFire && isFireButtonDown)
         {
             // fire and reset the timer
-            FireBullet();
+            FireBullet();FireBullet();FireBullet();
             shotTimer = 0f;
         }
     }

@@ -10,7 +10,9 @@ using static Unity.Mathematics.math;
 using Unity.Physics;
 using Unity.Physics.Systems;
 
-[UpdateAfter(typeof(EndFramePhysicsSystem))] 
+[UpdateInGroup(typeof(Unity.Entities.FixedStepSimulationSystemGroup))]
+[UpdateAfter(typeof(StepPhysicsWorld))]
+[UpdateBefore(typeof(EndFramePhysicsSystem))]
 public class CollisionSystem : JobComponentSystem
 {
     private BuildPhysicsWorld buildPhysicsWorld;
@@ -23,7 +25,7 @@ public class CollisionSystem : JobComponentSystem
         base.OnCreate();
         buildPhysicsWorld = World.GetOrCreateSystem<BuildPhysicsWorld>();
         stepPhysicsWorld = World.GetOrCreateSystem<StepPhysicsWorld>();
-        // commandBufferSystem = World.GetOrCreateSystem<EndSimulationEntityCommandBufferSystem>();
+        commandBufferSystem = World.GetOrCreateSystem<EndSimulationEntityCommandBufferSystem>();
     }
 
     [BurstCompile]
@@ -32,17 +34,16 @@ public class CollisionSystem : JobComponentSystem
         [ReadOnly] public ComponentDataFromEntity<Temperature> allTemperatures;
         // [ReadOnly] public ComponentDataFromEntity<PlayerTag> allPlayers;
 
-        // public EntityCommandBuffer entityCommandBuffer;
+        public EntityCommandBuffer entityCommandBuffer;
 
         public void Execute(CollisionEvent triggerEvent)
         {
             Entity entityA = triggerEvent.EntityA;
             Entity entityB = triggerEvent.EntityB;
-            Debug.Log("checking!");
         
             if (allTemperatures.HasComponent(entityA) && allTemperatures.HasComponent(entityB))
             {
-                Debug.Log("collided!");
+
             }
         }
     }
@@ -51,7 +52,7 @@ public class CollisionSystem : JobComponentSystem
     {
         var job = new PickupOnTriggerSystemJob();
         job.allTemperatures = GetComponentDataFromEntity<Temperature>(true);
-        // job.entityCommandBuffer = commandBufferSystem.CreateCommandBuffer();
+        job.entityCommandBuffer = commandBufferSystem.CreateCommandBuffer();
 
         JobHandle jobHandle = job.Schedule(
             stepPhysicsWorld.Simulation, 
@@ -60,7 +61,7 @@ public class CollisionSystem : JobComponentSystem
 
 
         jobHandle.Complete();
-        // commandBufferSystem.AddJobHandleForProducer(jobHandle);
+        commandBufferSystem.AddJobHandleForProducer(jobHandle);
         return jobHandle;
     }
 }

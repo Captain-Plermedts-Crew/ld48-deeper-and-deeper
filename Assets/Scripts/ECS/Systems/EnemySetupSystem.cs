@@ -8,6 +8,7 @@ using Unity.Collections;
 using Unity.Physics;
 using Collider = Unity.Physics.Collider;
 using MeshCollider = Unity.Physics.MeshCollider;
+using PhysicsMaterial = Unity.Physics.Material;
 
 using System;
 using Random = Unity.Mathematics.Random;
@@ -33,6 +34,19 @@ public class EnemySetupSystem : SystemBase
             entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
 
             createLotsOfEnemies();
+
+            createSingleEnemy(
+                entityManager,
+                float3.zero, //position
+                Quaternion.Euler(0,r.NextFloat(0,360),0), //orientation
+                cubeMesh,
+                iceMaterial);
+            createSingleEnemy(
+                entityManager,
+                float3.zero, //position
+                Quaternion.Euler(0,r.NextFloat(0,360),0), //orientation
+                cubeMesh,
+                iceMaterial);
             
     }
       
@@ -57,7 +71,7 @@ public class EnemySetupSystem : SystemBase
         
     }
 
-    private static Entity createSingleEnemy(
+    private unsafe static Entity createSingleEnemy(
         EntityManager entityManager,
         float3 position, 
         quaternion orientation,
@@ -83,31 +97,37 @@ public class EnemySetupSystem : SystemBase
 		});
         entityManager.SetComponentData(entity, new RenderBounds { Value = mesh.bounds.ToAABB() });
 
+        Unity.Physics.Material physicsMaterial = new Unity.Physics.Material{
+            CollisionResponse = Unity.Physics.CollisionResponsePolicy.CollideRaiseCollisionEvents
+        };
+        
+
         BlobAssetReference<Collider> collider = Unity.Physics.SphereCollider
             .Create(new SphereGeometry {
                 Center = float3.zero,
                 Radius = 1,
             },
-            CollisionFilter.Default
+            CollisionFilter.Default,
+            physicsMaterial
         );
 
         entityManager.SetComponentData(entity, new PhysicsCollider { Value = collider });
 
-        // float mass = 5f;
-        // Collider* colliderPtr = (Collider*)collider.GetUnsafePtr();
-        // entityManager.SetComponentData(entity, PhysicsMass.CreateDynamic(colliderPtr->MassProperties, mass));
+        float mass = 5f;
+        Collider* colliderPtr = (Collider*)collider.GetUnsafePtr();
+        entityManager.SetComponentData(entity, PhysicsMass.CreateDynamic(colliderPtr->MassProperties, mass));
         // Calculate the angular velocity in local space from rotation and world angular velocity
-        // float3 angularVelocityLocal = math.mul(math.inverse(colliderPtr->MassProperties.MassDistribution.Transform.rot), angularVelocity);
-        // entityManager.SetComponentData(entity, new PhysicsVelocity()
-        // {
-        //     Linear = 0,
-        //     Angular = 0
-        // });
-        // entityManager.SetComponentData(entity, new PhysicsDamping()
-        // {
-        //     Linear = 0.5f,
-        //     Angular = 0.5f
-        // });
+        float3 angularVelocityLocal = math.mul(math.inverse(colliderPtr->MassProperties.MassDistribution.Transform.rot), float3.zero);
+        entityManager.SetComponentData(entity, new PhysicsVelocity()
+        {
+            Linear = 0,
+            Angular = 0
+        });
+        entityManager.SetComponentData(entity, new PhysicsDamping()
+        {
+            Linear = 0.5f,
+            Angular = 0.5f
+        });
 
         return entity;
 
@@ -115,7 +135,7 @@ public class EnemySetupSystem : SystemBase
 
 
     public static EntityArchetype getFrozenEntityArchetype(EntityManager entityManager){
-        ComponentType[] renderedPhysicsComponents = EntityUtils.getRenderedPhysicsComponents(false);
+        ComponentType[] renderedPhysicsComponents = EntityUtils.getRenderedPhysicsComponents(true);
         ComponentType[] specificComponents = new ComponentType[]{
             typeof(EnemyTag),
             typeof(FrozenTag),
