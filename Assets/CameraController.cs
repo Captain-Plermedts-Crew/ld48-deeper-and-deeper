@@ -18,6 +18,10 @@ public class CameraController : MonoBehaviour
     void Update()
     {
         MoveCamera();
+        if(Input.GetKeyDown(KeyCode.Escape))
+        {
+            Application.Quit();
+        }
     }
 
     void MoveCamera()
