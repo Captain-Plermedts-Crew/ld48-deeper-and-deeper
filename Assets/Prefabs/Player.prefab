@@ -106,6 +106,8 @@ GameObject:
   - component: {fileID: 1216309450893101931}
   - component: {fileID: 1216309450893101941}
   - component: {fileID: 3000548323207666807}
+  - component: {fileID: 4586468018595013021}
+  - component: {fileID: 5744703927999407328}
   m_Layer: 0
   m_Name: Torch
   m_TagString: Untagged
@@ -208,6 +210,35 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tempLossRate: 0.5
   temperature: 300
+--- !u!114 &4586468018595013021
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1216309450893101934}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cf2c0ecd27ca0184890c7fedb8cb2fe0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rateOfFire: 0.44
+--- !u!114 &5744703927999407328
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1216309450893101934}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b92f75d34fa45e4190d32ea6f36c750, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Move:
+    x: 0
+    y: 0
+  IsFiring: 0
 --- !u!1 &2757512096411643892
 GameObject:
   m_ObjectHideFlags: 0

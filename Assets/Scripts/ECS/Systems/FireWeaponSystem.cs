@@ -11,8 +11,6 @@ public class FireWeaponSystem : SystemBase
     private EntityManager entityManager;
     private Entity bulletEntityPrefab;
 
-    private float shotTimer;
-
     private EndSimulationEntityCommandBufferSystem commandBufferSystem;
     EntityCommandBufferSystem barrier => World.GetOrCreateSystem<EndSimulationEntityCommandBufferSystem>();
 
@@ -36,35 +34,26 @@ public class FireWeaponSystem : SystemBase
 
         Entities
             .WithoutBurst()
-            .WithAll<PlayerTag, UserInputData>()
-            .ForEach((in Translation tran, in Rotation rot, in UserInputData input) => {
-                if(input.IsFiring){
-                    Debug.Log("FIRE!");
+            .WithAll<WeaponComponent, UserInputData>()
+            .ForEach((ref WeaponComponent weapon, ref UserInputData input, ref LocalToWorld localToWorld) => {
+                
+                weapon.shotTimer += deltaTime;
+                
+                if(input.IsFiring &&
+                    weapon.shotTimer >= weapon.rateOfFire){
+
+                    weapon.shotTimer = 0f;
+
+                    Debug.Log(weapon.shotTimer);
+
+                    float3 position = math.transform(localToWorld.Value, new float3(0, 0, 0));
+
                     var entity = commandBuffer.Instantiate(bulletEntityPrefab);
-                    commandBuffer.SetComponent(entity, new Translation { Value = tran.Value });
-                    commandBuffer.SetComponent(entity, new Rotation { Value = rot.Value });
+                    commandBuffer.SetComponent(entity, new Translation { Value = position });
+                    commandBuffer.SetComponent(entity, new Rotation { Value = localToWorld.Rotation });
                 }
 
             })
             .Run();
     }
- 
-    // private struct SpawnBulletJob : IJobForEachWithEntity<Translation, Rotation, UserInputData>
-    // {
-    //     private EntityCommandBuffer.Concurrent buffer;
-    //     private readonly float _deltaTime;
-
-    //     public SpawnBulletJob(EntiyCommandbuffer buffer, float deltaTime){
-    //         _deltaTime = deltaTime;
-    //     }
-
-    //     public void Execute(Entity entity, 
-    //         int index,
-    //         in Translation trans,
-    //         in Rotation rot,
-    //         in UserInputData input
-    //     {
-
-    //     }
-    // }
 }
