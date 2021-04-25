@@ -58,6 +58,7 @@ public class FireTorch : MonoBehaviour
         // set it to the muzzle angle and position
         entityManager.SetComponentData(bullet, new Translation { Value = torchTransform.position });
         entityManager.SetComponentData(bullet, new Rotation { Value = torchTransform.rotation });
+        entityManager.SetComponentData(bullet, new Temperature { Value = 100f });
 
     }
 
@@ -70,7 +71,7 @@ public class FireTorch : MonoBehaviour
         if (shotTimer >= rateOfFire && isFireButtonDown)
         {
             // fire and reset the timer
-            FireBullet();FireBullet();FireBullet();
+            FireBullet();
             shotTimer = 0f;
         }
     }

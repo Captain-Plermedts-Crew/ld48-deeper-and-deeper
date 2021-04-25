@@ -1,10 +1,14 @@
 using UnityEngine;
 using Unity.Entities;
 
-public class TemperatureSystem : SystemBase {
-    private static float freezeTemp = 0;
-    private static float igniteTemp = 10;
+using Unity.Mathematics;
+using Unity.Transforms;
 
+public class TemperatureSystem : SystemBase {
+    public static float freezeTemp = 0;
+    public static float igniteTemp = 10;
+    public static float maxTemp = 100;
+    
     public EndSimulationEntityCommandBufferSystem ECBS;
 
     protected override void OnCreate() {
@@ -21,37 +25,39 @@ public class TemperatureSystem : SystemBase {
         EntityCommandBuffer ecb = ECBS.CreateCommandBuffer();
 
         Entities
-        .WithoutBurst()
-        .WithAll<Temperature>()
-        .ForEach((Entity entity, ref Temperature tempComponent) =>
-        {
-            // decrement by time elapsed for one frame
-            tempComponent.temperature -= tempComponent.tempLossRate * Time.DeltaTime;   
-            
-            if (tempComponent.temperature < freezeTemp){
-                if (!HasComponent<FrozenTag>(entity)){
-                    ecb.AddComponent(entity, new FrozenTag{});
+            .WithoutBurst()
+            .WithAll<Temperature>()
+            .ForEach((Entity entity, ref Temperature temperature) =>
+            {
+                // decrement by time elapsed for one frame
+                // temperature.Value -= temperature.tempLossRate * Time.DeltaTime;   
+                
+                if (temperature.Value < freezeTemp){
+                    if (!HasComponent<FrozenTag>(entity)){
+                        ecb.AddComponent(entity, new FrozenTag{});
+                    }
+                    if (HasComponent<IgnitedTag>(entity)){
+                        ecb.RemoveComponent<IgnitedTag>(entity);
+                    }                
+                } else if (temperature.Value >= freezeTemp && temperature.Value <= igniteTemp){
+                    if (HasComponent<FrozenTag>(entity)){
+                        ecb.RemoveComponent<FrozenTag>(entity);
+                    }
+                    if (HasComponent<IgnitedTag>(entity)){
+                        ecb.RemoveComponent<IgnitedTag>(entity);
+                    }  
+                } else {
+                    if (HasComponent<FrozenTag>(entity)){
+                        ecb.RemoveComponent<FrozenTag>(entity);
+                    }
+                    if (!HasComponent<IgnitedTag>(entity)){
+                        ecb.AddComponent(entity, new IgnitedTag{});
+                    } 
                 }
-                if (HasComponent<IgnitedTag>(entity)){
-                    ecb.RemoveComponent<IgnitedTag>(entity);
-                }                
-            } else if (tempComponent.temperature >= freezeTemp && tempComponent.temperature <= igniteTemp){
-                if (HasComponent<FrozenTag>(entity)){
-                    ecb.RemoveComponent<FrozenTag>(entity);
-                }
-                if (HasComponent<IgnitedTag>(entity)){
-                    ecb.RemoveComponent<IgnitedTag>(entity);
-                }  
-            } else {
-                if (HasComponent<FrozenTag>(entity)){
-                    ecb.RemoveComponent<FrozenTag>(entity);
-                }
-                if (!HasComponent<IgnitedTag>(entity)){
-                    ecb.AddComponent(entity, new IgnitedTag{});
-                } 
-            }
 
-        }).Run();
+            })
+            .Run();
+
         ECBS.AddJobHandleForProducer(Dependency);
     }
 }
