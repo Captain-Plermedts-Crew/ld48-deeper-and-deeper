@@ -5,7 +5,7 @@ using Unity.Transforms;
 
 public class RotatePlayerToMouseSystem : SystemBase
 {
-         protected override void OnUpdate(){
+    protected override void OnUpdate(){
 
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
@@ -14,6 +14,7 @@ public class RotatePlayerToMouseSystem : SystemBase
         }
 
         Entities
+            .WithoutBurst()
             .WithAll<PlayerTag>()
             .ForEach((ref Translation trans, ref Rotation rot) =>
             {
@@ -23,6 +24,8 @@ public class RotatePlayerToMouseSystem : SystemBase
                 rotation.z = 0f;
 
                 rot.Value = Quaternion.Euler(rotation);
+
+                Debug.Log("Player Quat: " + rot.Value);
             })
             .Run();
     

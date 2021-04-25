@@ -6,6 +6,7 @@ using UnityEngine;
 
 
 [UpdateAfter(typeof(GatherInputSystem))]
+[UpdateAfter(typeof(RotatePlayerToMouseSystem))]
 public class FireWeaponSystem : SystemBase
 {
     private EntityManager entityManager;
@@ -44,14 +45,15 @@ public class FireWeaponSystem : SystemBase
 
                     weapon.shotTimer = 0f;
 
-                    Debug.Log(weapon.shotTimer);
+                    float3 position = math.transform(localToWorld.Value, new float3(0, 0, 5));
 
-                    float3 position = math.transform(localToWorld.Value, new float3(0, 0, 0));
+                    var rot = Unity.Physics.Math.DecomposeRigidBodyOrientation(localToWorld.Value);
 
                     var entity = commandBuffer.Instantiate(bulletEntityPrefab);
                     commandBuffer.SetComponent(entity, new Translation { Value = position });
-                    commandBuffer.SetComponent(entity, new Rotation { Value = localToWorld.Rotation });
+                    commandBuffer.SetComponent(entity, new Rotation { Value = rot });
                     commandBuffer.SetComponent(entity, new Temperature { Value = 50 });
+
                 }
 
             })
