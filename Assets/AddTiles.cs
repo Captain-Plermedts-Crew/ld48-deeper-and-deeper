@@ -26,7 +26,7 @@ public class AddTiles : MonoBehaviour
         var settings = GameObjectConversionSettings.FromWorld(World.DefaultGameObjectInjectionWorld, 
             blobAssetStore);
         tileEntityPrefab = GameObjectConversionUtility.ConvertGameObjectHierarchy(tilePreFab, settings);
-        Debug.Log(tileEntityPrefab);
+        
         //buildFloor();
         buildEastWestWall(-50f, 50f);
         buildSouthNorthWall(-50f, 50f);
