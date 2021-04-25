@@ -41,6 +41,7 @@ public class EnemySetupSystem : SystemBase
 
             // createSingleEnemy(
             //     entityManager,
+            //     frozenEnemyArchetype,
             //     float3.zero, //position
             //     Quaternion.Euler(0,r.NextFloat(0,360),0), //orientation
             //     cubeMesh,

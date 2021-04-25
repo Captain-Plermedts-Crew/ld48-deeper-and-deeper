@@ -208,8 +208,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: beff83d93a9384e129d001b871201147, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tempLossRate: 0.5
-  temperature: 300
+  Rate: 0
+  Value: 0
 --- !u!114 &4586468018595013021
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -223,6 +223,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rateOfFire: 0.44
+  shotTimer: 0
 --- !u!114 &5744703927999407328
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -385,8 +386,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: beff83d93a9384e129d001b871201147, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tempLossRate: 0
-  temperature: 0
+  Rate: 0
+  Value: 0
 --- !u!114 &-4548604674384258999
 MonoBehaviour:
   m_ObjectHideFlags: 0

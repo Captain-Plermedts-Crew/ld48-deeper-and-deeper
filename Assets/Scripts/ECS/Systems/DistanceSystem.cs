@@ -78,14 +78,14 @@ public class FindTargetJobSystem : SystemBase {
                 
                 Translation translation = chunkTranslations[i];
                 Temperature temperature = chunkTemperatures[i];
-
+                
                 //iterate through all other entities
                 for (int j=0; j<targetArray.Length; j++) {
                     // Cycling through all target entities
                     EntityWithPosition targetEntityWithPosition = targetArray[j];
 
                     float distanceToOtherEntity = math.distance(translation.Value, targetEntityWithPosition.position);
-                    if (distanceToOtherEntity < 10 && distanceToOtherEntity !=0){
+                    if (distanceToOtherEntity < 3 && distanceToOtherEntity !=0){
                         // Debug.Log("distance " + distanceToOtherEntity);
 
                         float temperatureDiff = temperature.Value - targetEntityWithPosition.temperature;

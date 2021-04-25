@@ -7,7 +7,6 @@ using Unity.Transforms;
 public class TemperatureSystem : SystemBase {
     public static float freezeTemp = 0;
     public static float igniteTemp = 10;
-    public static float maxTemp = 100;
     
     public EndSimulationEntityCommandBufferSystem ECBS;
 
@@ -32,27 +31,27 @@ public class TemperatureSystem : SystemBase {
                 // decrement by time elapsed for one frame
                 // temperature.Value -= temperature.tempLossRate * Time.DeltaTime;   
                 
-                if (temperature.Value < freezeTemp){
+                if (temperature.Value < freezeTemp){ //we're freezing
                     if (!HasComponent<FrozenTag>(entity)){
                         ecb.AddComponent(entity, new FrozenTag{});
                     }
                     if (HasComponent<IgnitedTag>(entity)){
                         ecb.RemoveComponent<IgnitedTag>(entity);
                     }                
-                } else if (temperature.Value >= freezeTemp && temperature.Value <= igniteTemp){
+                } else if (temperature.Value >= freezeTemp && temperature.Value <= igniteTemp){ //we're good
                     if (HasComponent<FrozenTag>(entity)){
                         ecb.RemoveComponent<FrozenTag>(entity);
                     }
                     if (HasComponent<IgnitedTag>(entity)){
                         ecb.RemoveComponent<IgnitedTag>(entity);
                     }  
-                } else {
+                } else if (temperature.Value > igniteTemp){ //we're hot
                     if (HasComponent<FrozenTag>(entity)){
                         ecb.RemoveComponent<FrozenTag>(entity);
                     }
                     if (!HasComponent<IgnitedTag>(entity)){
                         ecb.AddComponent(entity, new IgnitedTag{});
-                    } 
+                    }
                 }
 
             })

@@ -55,9 +55,13 @@ public class IgnitedProducesFireSystem : SystemBase {
         
                 float roll = r.NextFloat(0, 1f);// + .01f*temperature.Value/igniteTemp;//chance in 0 to temperature.Value
 
-                if (roll > .95f){
+                if (roll > .99f){
                     float3 newPos = new float3(translation.Value);
-                    newPos.y=newPos.y+.5f;
+                    newPos = new float3((float)newPos.x+(float)r.NextFloat(-.5f,.5f),
+                        (float)newPos.y+(float)r.NextFloat(.5f,.6f), 
+                        (float)newPos.z+(float)r.NextFloat(-.5f,.5f));
+                    // newPos.y=newPos.y+.5f;
+                    // newPos.x=newPos.z+
 
                     IgnitedProducesFireSystem.createEmber(
                         ecb,
@@ -66,7 +70,7 @@ public class IgnitedProducesFireSystem : SystemBase {
                         Quaternion.Euler(0, 0, 0),
                         sphereMesh,
                         fireMaterial,
-                        new float3(r.NextFloat(0,.1f), r.NextFloat(0,3f), r.NextFloat(0,.1f))
+                        new float3(r.NextFloat(0,.5f), r.NextFloat(0,6f), r.NextFloat(0,.5f))
                         );
                 }
                 
@@ -107,11 +111,12 @@ public class IgnitedProducesFireSystem : SystemBase {
         //Transform stuff
         ecb.SetComponent(entity, new Translation { Value = position });
         ecb.SetComponent(entity, new Rotation { Value = orientation });
-        ecb.SetComponent(entity, new Scale { Value = .5f });
+        ecb.SetComponent(entity, new Scale { Value = .125f });
         // ecb.SetComponent(entity, new Scale { Value = .5f });
 
         //custom stuff
-        ecb.SetComponent(entity, new Temperature{ Value = r.NextInt(300,10000), Rate = 100f });   
+        int igniteTemp = (int)TemperatureSystem.igniteTemp;
+        ecb.SetComponent(entity, new Temperature{ Value = r.NextInt(igniteTemp*2,igniteTemp*5), Rate = igniteTemp });   
 
         //RenderMesh & Bounds   
         ecb.SetSharedComponent(entity, new RenderMesh 
