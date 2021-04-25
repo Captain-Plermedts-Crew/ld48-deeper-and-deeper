@@ -1,26 +1,41 @@
 using Unity.Entities;
 using Unity.Transforms;
 using Unity.Mathematics;
+using Unity.Jobs;
+using UnityEngine;
 
-/// <summary>
-/// System for moving enemies or bullets forward
-/// </summary>
-/// 
-// 1 Systems inherit from ComponentSystem (single thread) 
-public class MovementSystem : ComponentSystem
+public partial class GatherInputSystem : SystemBase
+{
+    protected override void OnUpdate()
+    {
+        var horizontal = Input.GetAxis("Horizontal");
+        var vertical = Input.GetAxis("Vertical");
+
+        Entities
+            .WithName("GatherInput")
+            .ForEach((ref UserInputData inputData) =>
+            {
+                inputData.Move = new float2(horizontal, vertical);
+            }).ScheduleParallel();
+    }
+}
+
+[UpdateAfter(typeof(GatherInputSystem))]
+public class MovePlayerSystem : SystemBase
 {
     // 2 event-style callback that runs every frame
     protected override void OnUpdate()
     {
+        float deltaTime = Time.DeltaTime;
+
         // 3 loop through all Entities with MoveForward component; pass in Translation/Rotation/MoveForward components as input parameters
-        Entities.WithAll<MoveForward>().ForEach((ref Translation trans, ref Rotation rot, ref MoveForward moveForward) =>
-        {
-            // 4 calculate how much to move each frame in the local positive z and increment the position
-            trans.Value += moveForward.speed * Time.DeltaTime * math.forward(rot.Value);
-        });
+        Entities
+            .WithoutBurst()
+            .WithAll<Movement, UserInputData>()
+            .ForEach((ref Translation translation, in Movement movement, in UserInputData input) =>
+            {
+                translation.Value += new float3(input.Move.x, 0.0f, input.Move.y) * movement.speed * deltaTime;
+            })
+            .ScheduleParallel();
     }
 }
-
-// Systems can also be multithreaded by inheriting from JobComponentSystem; 
-// for more info see:
-// https://docs.unity3d.com/Packages/com.unity.entities@0.1/manual/job_component_system.html

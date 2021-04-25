@@ -17,7 +17,7 @@ public class CameraController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        MoveCamera();
+        //MoveCamera();
         if(Input.GetKeyDown(KeyCode.Escape))
         {
             Application.Quit();
