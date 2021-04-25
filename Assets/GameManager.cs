@@ -10,6 +10,7 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
 
+    public GameObject playerFollower;
 
     private Transform player;
     
@@ -60,7 +61,11 @@ public class GameManager : MonoBehaviour
         Entity playerEntityPrefab = GameObjectConversionUtility.ConvertGameObjectHierarchy(playerPreFab, settings);
         playerEntity = entityManager.Instantiate(playerEntityPrefab);
 
-        entityManager.SetComponentData(playerEntity, new Translation { Value = new float3(0.0f, 1.0f, 0.0f) });
+        FollowPlayer followPlayer = playerFollower.GetComponent<FollowPlayer>();
+        followPlayer.playerEntity = playerEntity;
+
+
+        entityManager.SetComponentData(playerEntity, new Translation { Value = new float3(0.0f, 2.1f, 0.0f) });
         //entityManager.SetComponentData(playerEntity, new Rotation { Value = new quaternion(0, 0, 0, 0) });
         entityManager.SetComponentData(playerEntity, new Temperature{tempLossRate=0f, temperature=98.6f});   
     }
