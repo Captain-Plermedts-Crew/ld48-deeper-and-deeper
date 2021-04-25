@@ -19,7 +19,6 @@ public class MoveForwardSystem : ComponentSystem
         Entities.WithAll<MoveForward>()
             .ForEach((ref Translation trans, ref Rotation rot, ref MoveForward moveForward) =>
             {
-                Debug.Log("Bullet Rot: " + rot.Value);
                 // 4 calculate how much to move each frame in the local positive z and increment the position
                 trans.Value += moveForward.speed * deltaTime * math.forward(rot.Value);
             });

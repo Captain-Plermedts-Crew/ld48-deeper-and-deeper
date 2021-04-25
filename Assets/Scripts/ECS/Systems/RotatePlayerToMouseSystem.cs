@@ -24,8 +24,6 @@ public class RotatePlayerToMouseSystem : SystemBase
                 rotation.z = 0f;
 
                 rot.Value = Quaternion.Euler(rotation);
-
-                Debug.Log("Player Quat: " + rot.Value);
             })
             .Run();
     
