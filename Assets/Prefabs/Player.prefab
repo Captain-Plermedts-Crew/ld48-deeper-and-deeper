@@ -223,6 +223,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rateOfFire: 0.44
+  shotTimer: 0
 --- !u!114 &5744703927999407328
 MonoBehaviour:
   m_ObjectHideFlags: 0
