@@ -7,12 +7,10 @@ using UnityEngine;
 [UpdateAfter(typeof(GatherInputSystem))]
 public class MovePlayerSystem : SystemBase
 {
-    // 2 event-style callback that runs every frame
     protected override void OnUpdate()
     {
         float deltaTime = Time.DeltaTime;
 
-        // 3 loop through all Entities with MoveForward component; pass in Translation/Rotation/MoveForward components as input parameters
         Entities
             .WithoutBurst()
             .WithAll<Movement, UserInputData>()
