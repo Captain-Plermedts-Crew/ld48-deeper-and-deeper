@@ -25,6 +25,8 @@ public class EnemySpawner : MonoBehaviour
     private EntityArchetype frozenEnemyArchetype;
 
     // Awake is called before the first frame update
+    // Need to use an Awake instead of a Start because GameManager calls spawn in their start... 
+    // might be a better way to trigger spawn events?
     void Awake()
     {
         var cubeGO = GameObject.CreatePrimitive(PrimitiveType.Cube);
