@@ -27,7 +27,7 @@ public class AddTiles : MonoBehaviour
             blobAssetStore);
         tileEntityPrefab = GameObjectConversionUtility.ConvertGameObjectHierarchy(tilePreFab, settings);
         
-        //buildFloor();
+        buildFloor();
         buildEastWestWall(-50f, 50f);
         buildSouthNorthWall(-50f, 50f);
         buildEastWestWall(-50f, -50f);

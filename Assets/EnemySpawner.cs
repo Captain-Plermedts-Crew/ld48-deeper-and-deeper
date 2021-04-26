@@ -13,41 +13,40 @@ using PhysicsMaterial = Unity.Physics.Material;
 using System;
 using Random = Unity.Mathematics.Random;
 
-// [UpdateInGroup(typeof(InitializationSystemGroup))]
-public class EnemySetupSystem : SystemBase
+public class EnemySpawner : MonoBehaviour
 {
-
-    private Mesh cubeMesh = GameObject.CreatePrimitive(PrimitiveType.Cube).GetComponent<MeshFilter>().mesh;//((GameObject)Resources.Load ("Models/SpaceFighterAlt")).GetComponent<MeshFilter>().sharedMesh;
-    private UnityEngine.Material iceMaterial = Resources.Load("IceMaterial", typeof(UnityEngine.Material)) as UnityEngine.Material;
+    private Mesh cubeMesh;
+    private UnityEngine.Material iceMaterial;
 
     private Random r = new Random(123);
 
-    private int numEnemies = 100;
-    private float halfLevelSize = 50;
-    // private float enemySpawnRate = 1;
-     
+    private float halfLevelSize = 50;     
     private EntityManager entityManager;
     private EntityArchetype frozenEnemyArchetype;
 
-    protected override void OnStartRunning()
+    // Start is called before the first frame update
+    void Start()
     {
-            base.OnStartRunning();
-            entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
-
-            frozenEnemyArchetype = EnemySetupSystem.getFrozenEntityArchetype(entityManager);
-            createLotsOfEnemies();            
-    }
-      
-    protected override void OnUpdate()
-    {
-      
+        var cubeGO = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        cubeMesh = cubeGO.GetComponent<MeshFilter>().mesh;
+        Destroy(cubeGO);
+        iceMaterial = Resources.Load("IceMaterial", typeof(UnityEngine.Material)) as UnityEngine.Material;
+        entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
+        frozenEnemyArchetype = EnemySpawner.getFrozenEntityArchetype(entityManager);
     }
 
-    private void createLotsOfEnemies(){
+    // Update is called once per frame
+    void Update()
+    {
+        
+    }
+
+    public void Spawn(int numEnemies){
 
         for (int i=0; i<numEnemies; i++){
-            float3 position = r.NextFloat3(-halfLevelSize,halfLevelSize);
-            position.y = 1;
+            float distance = r.NextFloat(10f, 90f);
+            Vector2 randomPoint = UnityEngine.Random.insideUnitCircle.normalized * distance;
+            float3 position = new float3(randomPoint.x, 1.1f, randomPoint.y);            
 
             createSingleEnemy(
                 entityManager,
@@ -57,9 +56,9 @@ public class EnemySetupSystem : SystemBase
                 cubeMesh,
                 iceMaterial);
         }
-        
     }
 
+    
     private unsafe static Entity createSingleEnemy(
         EntityManager entityManager,
         EntityArchetype archetype,
@@ -101,27 +100,10 @@ public class EnemySetupSystem : SystemBase
 
         entityManager.SetComponentData(entity, new PhysicsCollider { Value = collider });
 
-        // float mass = 5f;
-        // Collider* colliderPtr = (Collider*)collider.GetUnsafePtr();
-        // entityManager.SetComponentData(entity, PhysicsMass.CreateDynamic(colliderPtr->MassProperties, mass));
-        // // Calculate the angular velocity in local space from rotation and world angular velocity
-        // float3 angularVelocityLocal = math.mul(math.inverse(colliderPtr->MassProperties.MassDistribution.Transform.rot), float3.zero);
-        // entityManager.SetComponentData(entity, new PhysicsVelocity()
-        // {
-        //     Linear = 0,
-        //     Angular = 0
-        // });
-        // entityManager.SetComponentData(entity, new PhysicsDamping()
-        // {
-        //     Linear = 0.5f,
-        //     Angular = 0.5f
-        // });
-
         return entity;
-
     }
 
-
+    
     public static EntityArchetype getFrozenEntityArchetype(EntityManager entityManager){
         ComponentType[] renderedPhysicsComponents = EntityUtils.getRenderedPhysicsComponents(false);
         ComponentType[] specificComponents = new ComponentType[]{
@@ -129,5 +111,5 @@ public class EnemySetupSystem : SystemBase
             typeof(FrozenTag),
             typeof(Temperature)};
         return entityManager.CreateArchetype(EntityUtils.mergeComponentTypes(specificComponents, renderedPhysicsComponents));
-    }   
+    }  
 }

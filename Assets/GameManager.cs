@@ -5,17 +5,36 @@ using TMPro;
 using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Transforms;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
+
+// used to track game states
+public enum GameState
+{
+    Ready,
+    Starting,
+    Playing,
+    Over
+}
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
 
     public GameObject playerFollower;
+
+    [SerializeField] private Image screenFader;
+
+    private GameState gameState;
+    [SerializeField] private float delay = 2f;
+
     private float temp;
     [SerializeField] TextMeshProUGUI tempText;
 
     [SerializeField] private GameObject playerPreFab;
     private Entity playerEntity;
+
+    private EnemySpawner enemySpawner;
 
     private EntityManager entityManager;
 
@@ -32,11 +51,8 @@ public class GameManager : MonoBehaviour
             Instance = this;
         }
 
-    }
+        enemySpawner = FindObjectOfType<EnemySpawner>();
 
-    // Start is called before the first frame update
-    void Start()
-    {
          // each World has one EntityManager; store a reference to it
         entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
         blobAssetStore = new BlobAssetStore();
@@ -50,12 +66,64 @@ public class GameManager : MonoBehaviour
 
         FollowPlayer followPlayer = playerFollower.GetComponent<FollowPlayer>();
         followPlayer.playerEntity = playerEntity;
+        gameState = GameState.Ready;
 
+    }
 
+    // Start is called before the first frame update
+    void Start()
+    {
+        gameState = GameState.Starting;     
+        StartCoroutine(MainGameLoopRoutine());        
+    }
+
+    void resetPlayer()
+    {
+        Debug.Log("reseting player");
         entityManager.SetComponentData(playerEntity, new Translation { Value = new float3(0.0f, 2.1f, 0.0f) });
-        //entityManager.SetComponentData(playerEntity, new Rotation { Value = new quaternion(0, 0, 0, 0) });
-        entityManager.SetComponentData(playerEntity, new Temperature{Rate=0f, Value=98.6f});
-        UpdateTemperatue(98.6f);
+        entityManager.SetComponentData(playerEntity, new Temperature{Rate=0f, Value=200.6f});
+        //UpdateTemperatue(98.6f);
+    }
+
+    
+    private IEnumerator MainGameLoopRoutine()
+    {
+        yield return StartCoroutine(StartGameRoutine());
+        yield return StartCoroutine(PlayGameRoutine());
+        yield return StartCoroutine(EndGameRoutine());
+    }
+
+    
+    private IEnumerator StartGameRoutine()
+    {
+        resetPlayer();
+
+        enemySpawner.Spawn(100);
+
+        screenFader?.CrossFadeAlpha(0f, delay, true);
+
+        yield return new WaitForSeconds(delay);
+        gameState = GameState.Playing;
+    }
+    
+    private IEnumerator PlayGameRoutine()
+    {
+        while (gameState == GameState.Playing)
+        {
+            yield return null;
+        }
+    }
+
+    private IEnumerator EndGameRoutine()
+    {
+        // fade to black and wait
+        screenFader?.CrossFadeAlpha(1f, delay, true);
+        yield return new WaitForSeconds(delay);
+
+        gameState = GameState.Ready;
+
+        // restart the game
+        Start();
     }
 
     public static void UpdateTemperatue(float temp){
@@ -69,6 +137,31 @@ public class GameManager : MonoBehaviour
         // Dispose of the BlobAssetStore, else we're get a message:
         // A Native Collection has not been disposed, resulting in a memory leak.
         if (blobAssetStore != null) { blobAssetStore.Dispose(); }
+        Debug.Log("DESTROY");
+    }
+
+    
+    // is the game over?
+    public static bool IsGameOver()
+    {
+        if (GameManager.Instance == null)
+        {
+            return false;
+        }
+
+        return (Instance.gameState == GameState.Over);
+    }
+
+    
+    // end the game (player has died)
+    public static void EndGame()
+    {
+        if (GameManager.Instance == null)
+        {
+            return;
+        }
+
+        Instance.gameState = GameState.Over;
     }
 
     // Update is called once per frame
