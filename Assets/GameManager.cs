@@ -40,6 +40,8 @@ public class GameManager : MonoBehaviour
 
     private BlobAssetStore blobAssetStore;
 
+    public PlayerManager PlayerManager;
+
     void Awake()
     {
         if (Instance != null && Instance != this)
@@ -66,6 +68,9 @@ public class GameManager : MonoBehaviour
 
         FollowPlayer followPlayer = playerFollower.GetComponent<FollowPlayer>();
         followPlayer.playerEntity = playerEntity;
+
+        PlayerManager = playerFollower.GetComponent<PlayerManager>();        
+
         gameState = GameState.Ready;
 
     }
