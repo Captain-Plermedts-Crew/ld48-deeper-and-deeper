@@ -31,6 +31,7 @@ public class TemperatureSystem : SystemBase {
                 // decrement by time elapsed for one frame
                 // temperature.Value -= temperature.tempLossRate * Time.DeltaTime;   
                 
+                //All for Safety in case something goes wrong
                 if (temperature.Value < freezeTemp){ //we're freezing
                     if (!HasComponent<FrozenTag>(entity)){
                         ecb.AddComponent(entity, new FrozenTag{});
@@ -62,7 +63,8 @@ public class TemperatureSystem : SystemBase {
             .WithAll<Temperature, PlayerTag>()
             .ForEach((in Temperature temp, in PlayerTag player) => {
                 GameManager.UpdateTemperatue(temp.Value);
-                if(temp.Value <= 15.0f){
+                if(temp.Value <= freezeTemp) //should probably change this to a game state system loooking for a Frozen tag on the player entity
+                { 
                     GameManager.EndGame();
                 }
             })

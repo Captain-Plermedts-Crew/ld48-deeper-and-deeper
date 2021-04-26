@@ -72,10 +72,10 @@ public class FindTargetJobSystem : SystemBase {
             var chunkTemperatures = chunk.GetNativeArray(TemperatureType);
             
 
-            float tempDiffSum = 0;
+            
             //iterate through each entity in this chunk
             for (int i=0; i<chunk.Count; i++){
-                
+                float tempDiffSum = 0;
                 Translation translation = chunkTranslations[i];
                 Temperature temperature = chunkTemperatures[i];
                 
