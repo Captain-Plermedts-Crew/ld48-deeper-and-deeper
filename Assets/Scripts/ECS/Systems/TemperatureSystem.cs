@@ -62,7 +62,7 @@ public class TemperatureSystem : SystemBase {
             .WithAll<Temperature, PlayerTag>()
             .ForEach((in Temperature temp, in PlayerTag player) => {
                 GameManager.UpdateTemperatue(temp.Value);
-                if(temp.Value <= 10.0f){
+                if(temp.Value <= 15.0f){
                     GameManager.EndGame();
                 }
             })
