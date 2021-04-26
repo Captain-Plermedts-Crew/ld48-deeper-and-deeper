@@ -67,7 +67,7 @@ public class AddTiles : MonoBehaviour
         for (int i = 0; i < 50; i++){
             x += 2.0f;
             y = -0.35f;
-            for (int j = 0; j < 3; j++){
+            for (int j = 0; j < 2; j++){
                 y += 2.0f;
                 addTile(x, y, z);
             }            
@@ -79,7 +79,7 @@ public class AddTiles : MonoBehaviour
         for (int i = 0; i < 50; i++){
             x += 2.0f;
             y = -0.35f;
-            for (int j = 0; j < 3; j++){
+            for (int j = 0; j < 2; j++){
                 y += 2.0f;
                 addTile(z, y, x);
             }            
