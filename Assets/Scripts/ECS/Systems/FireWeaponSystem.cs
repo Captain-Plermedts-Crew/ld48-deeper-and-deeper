@@ -55,7 +55,6 @@ public class FireWeaponSystem : SystemBase
                     commandBuffer.SetComponent(entity, new Rotation { Value = rot });
                     commandBuffer.SetComponent(entity, new Temperature { Value = 100 });
                     GameManager.Instance.PlayerManager.PlayWeaponFX();
-
                 }
 
             })
