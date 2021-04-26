@@ -24,8 +24,8 @@ public class EnemySpawner : MonoBehaviour
     private EntityManager entityManager;
     private EntityArchetype frozenEnemyArchetype;
 
-    // Start is called before the first frame update
-    void Start()
+    // Awake is called before the first frame update
+    void Awake()
     {
         var cubeGO = GameObject.CreatePrimitive(PrimitiveType.Cube);
         cubeMesh = cubeGO.GetComponent<MeshFilter>().mesh;
