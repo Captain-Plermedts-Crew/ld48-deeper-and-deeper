@@ -57,6 +57,14 @@ public class TemperatureSystem : SystemBase {
             })
             .Run();
 
+        Entities
+            .WithoutBurst()
+            .WithAll<Temperature, PlayerTag>()
+            .ForEach((in Temperature temp, in PlayerTag player) => {
+                GameManager.UpdateTemperatue(temp.Value);
+            })
+            .Run();
+
         ECBS.AddJobHandleForProducer(Dependency);
     }
 }

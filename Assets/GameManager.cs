@@ -11,8 +11,8 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance;
 
     public GameObject playerFollower;
-
-    [SerializeField] TextMeshPro tempText;
+    private float temp;
+    [SerializeField] TextMeshProUGUI tempText;
 
     [SerializeField] private GameObject playerPreFab;
     private Entity playerEntity;
@@ -54,7 +54,14 @@ public class GameManager : MonoBehaviour
 
         entityManager.SetComponentData(playerEntity, new Translation { Value = new float3(0.0f, 2.1f, 0.0f) });
         //entityManager.SetComponentData(playerEntity, new Rotation { Value = new quaternion(0, 0, 0, 0) });
-        entityManager.SetComponentData(playerEntity, new Temperature{Rate=0f, Value=98.6f});   
+        entityManager.SetComponentData(playerEntity, new Temperature{Rate=0f, Value=98.6f});
+        UpdateTemperatue(98.6f);
+    }
+
+    public static void UpdateTemperatue(float temp){
+
+        Instance.temp = temp;
+        Instance.tempText.text = ""+Instance.temp;
     }
 
     private void OnDestroy()
