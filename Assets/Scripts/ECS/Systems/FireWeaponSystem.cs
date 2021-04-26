@@ -47,6 +47,7 @@ public class FireWeaponSystem : SystemBase
 
                     float3 position = math.transform(localToWorld.Value, new float3(0, 0, 0));
 
+                    //we need to use this fucking thing to get the ACTUAL rotation, because the torches scale can mess with localToWorld quats
                     var rot = Unity.Physics.Math.DecomposeRigidBodyOrientation(localToWorld.Value);
 
                     var entity = commandBuffer.Instantiate(bulletEntityPrefab);
