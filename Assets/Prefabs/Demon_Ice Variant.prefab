@@ -1,5 +1,56 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-8019328239094040205
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6057980988157606693}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1db6637213556f17c9b958b8ffa02d4f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &7734447428814661484
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6057980988157606693}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75f9e206eb112b3afa72c440ba05da06, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &7880773004366508926
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6057980988157606693}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea7d7495833204790ba1d3a8755397f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ConversionMode: 0
+--- !u!114 &3250371541550581033
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6057980988157606693}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: beff83d93a9384e129d001b871201147, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Rate: 0
+  Value: 0
 --- !u!1001 &6400508206043956852
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -70,7 +121,13 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: dee55eff84098bd48ba2aed6208212cb,
         type: 3}
       propertyPath: m_Name
-      value: Demon_Ice
+      value: Demon_Ice Variant
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: dee55eff84098bd48ba2aed6208212cb, type: 3}
+--- !u!1 &6057980988157606693 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: dee55eff84098bd48ba2aed6208212cb,
+    type: 3}
+  m_PrefabInstance: {fileID: 6400508206043956852}
+  m_PrefabAsset: {fileID: 0}
