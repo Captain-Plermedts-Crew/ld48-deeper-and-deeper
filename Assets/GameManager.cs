@@ -34,7 +34,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject playerPreFab;
     private Entity playerEntity;
 
-    private EnemySpawner enemySpawner;
+    public EnemySpawner enemySpawner;
 
     private EntityManager entityManager;
 

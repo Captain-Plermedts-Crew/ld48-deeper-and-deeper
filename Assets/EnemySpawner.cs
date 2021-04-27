@@ -32,7 +32,7 @@ public class EnemySpawner : MonoBehaviour
         var cubeGO = GameObject.CreatePrimitive(PrimitiveType.Cube);
         cubeMesh = cubeGO.GetComponent<MeshFilter>().mesh;
         Destroy(cubeGO);
-        iceMaterial = Resources.Load("IceMaterial", typeof(UnityEngine.Material)) as UnityEngine.Material;
+        iceMaterial = Resources.Load("Materials/IceMaterial", typeof(UnityEngine.Material)) as UnityEngine.Material;
         entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
         frozenEnemyArchetype = EnemySpawner.getFrozenEntityArchetype(entityManager);
     }
