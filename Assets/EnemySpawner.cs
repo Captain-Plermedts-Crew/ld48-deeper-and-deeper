@@ -15,6 +15,14 @@ using Random = Unity.Mathematics.Random;
 
 public class EnemySpawner : MonoBehaviour
 {
+
+    [SerializeField] private GameObject enemyPreFab;
+    private Entity enemyEntityPrefab;
+
+    private BlobAssetStore blobAssetStore;
+
+
+
     private Mesh cubeMesh;
     private UnityEngine.Material iceMaterial;
 
@@ -29,13 +37,28 @@ public class EnemySpawner : MonoBehaviour
     // might be a better way to trigger spawn events?
     void Awake()
     {
+        entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
+        blobAssetStore = new BlobAssetStore();
+        // settings used to convert GameObject prefab
+        var settings = GameObjectConversionSettings.FromWorld(World.DefaultGameObjectInjectionWorld, blobAssetStore);
+        enemyEntityPrefab = GameObjectConversionUtility.ConvertGameObjectHierarchy(enemyPreFab, settings);
+        
+
         var cubeGO = GameObject.CreatePrimitive(PrimitiveType.Cube);
         cubeMesh = cubeGO.GetComponent<MeshFilter>().mesh;
         Destroy(cubeGO);
         iceMaterial = Resources.Load("Materials/IceMaterial", typeof(UnityEngine.Material)) as UnityEngine.Material;
-        entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
+
         frozenEnemyArchetype = EnemySpawner.getFrozenEntityArchetype(entityManager);
     }
+    
+    private void OnDestroy()
+    {
+        // Dispose of the BlobAssetStore, else we're get a message:
+        // A Native Collection has not been disposed, resulting in a memory leak.
+        if (blobAssetStore != null) { blobAssetStore.Dispose(); }
+    }
+
 
     // Update is called once per frame
     void Update()
@@ -45,18 +68,23 @@ public class EnemySpawner : MonoBehaviour
 
     public void Spawn(int numEnemies){
 
+
         for (int i=0; i<numEnemies; i++){
             float distance = r.NextFloat(10f, 90f);
             Vector2 randomPoint = UnityEngine.Random.insideUnitCircle.normalized * distance;
-            float3 position = new float3(randomPoint.x, 1.1f, randomPoint.y);            
+            float3 position = new float3(randomPoint.x, 0.5f, randomPoint.y);            
+            var entity = entityManager.Instantiate(enemyEntityPrefab);
 
-            createSingleEnemy(
-                entityManager,
-                frozenEnemyArchetype,
-                position, //position
-                Quaternion.Euler(0,r.NextFloat(0,360),0), //orientation
-                cubeMesh,
-                iceMaterial);
+            entityManager.SetComponentData(entity, new Translation { Value = position});
+            entityManager.SetComponentData(entity, new Rotation { Value = Quaternion.Euler(0,r.NextFloat(0,360),0) });
+
+            // createSingleEnemy(
+            //     entityManager,
+            //     frozenEnemyArchetype,
+            //     position, //position
+            //     Quaternion.Euler(0,r.NextFloat(0,360),0), //orientation
+            //     cubeMesh,
+            //     iceMaterial);
         }
     }
 

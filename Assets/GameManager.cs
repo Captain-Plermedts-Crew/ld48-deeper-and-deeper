@@ -103,7 +103,7 @@ public class GameManager : MonoBehaviour
     {
         resetPlayer();
 
-        enemySpawner.Spawn(100);
+        enemySpawner.Spawn(300);
 
         screenFader?.CrossFadeAlpha(0f, delay, true);
 
@@ -142,7 +142,6 @@ public class GameManager : MonoBehaviour
         // Dispose of the BlobAssetStore, else we're get a message:
         // A Native Collection has not been disposed, resulting in a memory leak.
         if (blobAssetStore != null) { blobAssetStore.Dispose(); }
-        Debug.Log("DESTROY");
     }
 
     
