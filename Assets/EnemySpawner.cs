@@ -28,7 +28,7 @@ public class EnemySpawner : MonoBehaviour
 
     private Random r = new Random(123);
 
-    private float halfLevelSize = 50;     
+    // private float halfLevelSize = 50;     
     private EntityManager entityManager;
     private EntityArchetype frozenEnemyArchetype;
 
@@ -49,7 +49,7 @@ public class EnemySpawner : MonoBehaviour
         Destroy(cubeGO);
         iceMaterial = Resources.Load("Materials/IceMaterial", typeof(UnityEngine.Material)) as UnityEngine.Material;
 
-        frozenEnemyArchetype = EnemySpawner.getFrozenEntityArchetype(entityManager);
+        // frozenEnemyArchetype = EnemySpawner.getFrozenEntityArchetype(entityManager);
     }
     
     private void OnDestroy()
@@ -89,57 +89,57 @@ public class EnemySpawner : MonoBehaviour
     }
 
     
-    private unsafe static Entity createSingleEnemy(
-        EntityManager entityManager,
-        EntityArchetype archetype,
-        float3 position, 
-        quaternion orientation,
-        Mesh mesh,
-        UnityEngine.Material material){
+    // private unsafe static Entity createSingleEnemy(
+    //     EntityManager entityManager,
+    //     EntityArchetype archetype,
+    //     float3 position, 
+    //     quaternion orientation,
+    //     Mesh mesh,
+    //     UnityEngine.Material material){
 
-        Entity entity = entityManager.CreateEntity(archetype);
+    //     Entity entity = entityManager.CreateEntity(archetype);
         
-        //Transform stuff
-        entityManager.AddComponentData(entity, new Translation { Value = position });
-        entityManager.SetComponentData(entity, new Rotation { Value = orientation });
+    //     //Transform stuff
+    //     entityManager.AddComponentData(entity, new Translation { Value = position });
+    //     entityManager.SetComponentData(entity, new Rotation { Value = orientation });
 
-        //custom stuff
-        entityManager.AddComponentData(entity, new Temperature{ Value = 0f });   
+    //     //custom stuff
+    //     entityManager.AddComponentData(entity, new Temperature{ Value = 0f });   
 
-        //RenderMesh & Bounds   
-        entityManager.AddSharedComponentData(entity, new RenderMesh 
-		{
-			mesh = mesh,
-			material = material
-		});
-        entityManager.SetComponentData(entity, new RenderBounds { Value = mesh.bounds.ToAABB() });
+    //     //RenderMesh & Bounds   
+    //     entityManager.AddSharedComponentData(entity, new RenderMesh 
+	// 	{
+	// 		mesh = mesh,
+	// 		material = material
+	// 	});
+    //     entityManager.SetComponentData(entity, new RenderBounds { Value = mesh.bounds.ToAABB() });
 
-        Unity.Physics.Material physicsMaterial = new Unity.Physics.Material{
-            CollisionResponse = Unity.Physics.CollisionResponsePolicy.CollideRaiseCollisionEvents
-        };
+    //     Unity.Physics.Material physicsMaterial = new Unity.Physics.Material{
+    //         CollisionResponse = Unity.Physics.CollisionResponsePolicy.CollideRaiseCollisionEvents
+    //     };
         
 
-        BlobAssetReference<Collider> collider = Unity.Physics.SphereCollider
-            .Create(new SphereGeometry {
-                Center = float3.zero,
-                Radius = 1,
-            },
-            CollisionFilter.Default,
-            physicsMaterial
-        );
+    //     BlobAssetReference<Collider> collider = Unity.Physics.SphereCollider
+    //         .Create(new SphereGeometry {
+    //             Center = float3.zero,
+    //             Radius = 1,
+    //         },
+    //         CollisionFilter.Default,
+    //         physicsMaterial
+    //     );
 
-        entityManager.SetComponentData(entity, new PhysicsCollider { Value = collider });
+    //     entityManager.SetComponentData(entity, new PhysicsCollider { Value = collider });
 
-        return entity;
-    }
+    //     return entity;
+    // }
 
     
-    public static EntityArchetype getFrozenEntityArchetype(EntityManager entityManager){
-        ComponentType[] renderedPhysicsComponents = EntityUtils.getRenderedPhysicsComponents(false);
-        ComponentType[] specificComponents = new ComponentType[]{
-            typeof(EnemyTag),
-            typeof(FrozenTag),
-            typeof(Temperature)};
-        return entityManager.CreateArchetype(EntityUtils.mergeComponentTypes(specificComponents, renderedPhysicsComponents));
-    }  
+    // public static EntityArchetype getFrozenEntityArchetype(EntityManager entityManager){
+    //     ComponentType[] renderedPhysicsComponents = EntityUtils.getRenderedPhysicsComponents(false);
+    //     ComponentType[] specificComponents = new ComponentType[]{
+    //         typeof(EnemyTag),
+    //         typeof(FrozenTag),
+    //         typeof(Temperature)};
+    //     return entityManager.CreateArchetype(EntityUtils.mergeComponentTypes(specificComponents, renderedPhysicsComponents));
+    // }  
 }

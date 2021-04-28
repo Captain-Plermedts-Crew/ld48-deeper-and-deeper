@@ -13,7 +13,7 @@ using PhysicsMaterial = Unity.Physics.Material;
 using System;
 using Random = Unity.Mathematics.Random;
 
-public class IgnitedProducesFireSystem : SystemBase {
+public class EmberLifeCycleSystem : SystemBase {
 
     private Mesh sphereMesh = GameObject.CreatePrimitive(PrimitiveType.Sphere).GetComponent<MeshFilter>().mesh;//((GameObject)Resources.Load ("Models/SpaceFighterAlt")).GetComponent<MeshFilter>().sharedMesh;
     private UnityEngine.Material fireMaterial = Resources.Load("FireMaterial", typeof(UnityEngine.Material)) as UnityEngine.Material;
@@ -26,7 +26,6 @@ public class IgnitedProducesFireSystem : SystemBase {
 
     protected override void OnCreate() {
         base.OnCreate();
- 
         //Populate the reference
         ECBS = World.GetOrCreateSystem<EndSimulationEntityCommandBufferSystem>();
         
@@ -43,6 +42,7 @@ public class IgnitedProducesFireSystem : SystemBase {
         float deltaTime = Time.DeltaTime;
         float igniteTemp = TemperatureSystem.igniteTemp;
 
+        //Create new ember loop
         Entities
             .WithStructuralChanges()
             .WithoutBurst()
@@ -63,7 +63,7 @@ public class IgnitedProducesFireSystem : SystemBase {
                     // newPos.y=newPos.y+.5f;
                     // newPos.x=newPos.z+
 
-                    IgnitedProducesFireSystem.createEmber(
+                    EmberLifeCycleSystem.createEmber(
                         ecb,
                         emberArchetype,
                         newPos,
