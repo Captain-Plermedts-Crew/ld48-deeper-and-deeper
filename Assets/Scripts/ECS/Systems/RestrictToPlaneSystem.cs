@@ -14,7 +14,7 @@ public class RestrictToPlaneSystem : SystemBase
             .ForEach((ref Translation pos, 
                 ref PhysicsVelocity physicsVelocity) =>
             {
-                pos.Value.y = 2;
+                pos.Value.y = 1.75f;
                 physicsVelocity.Linear.y=0;
             })
             .Run();
