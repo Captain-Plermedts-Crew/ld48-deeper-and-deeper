@@ -68,35 +68,18 @@ public class CameraController : MonoBehaviour
                 // This blends the target rotation in gradually.
                 // Keep sharpness between 0 and 1 - lower values are slower/softer.
                 
-                camera.rotation = Quaternion.Slerp(camera.rotation, targetRotation, sharpness);
+                camera.rotation = Quaternion.Slerp(camera.rotation, targetRotation, sharpness*Time.deltaTime);
+                //Debug.Log(sharpness * Time.deltaTime);
+
                 if (!Drunk)
                 {
                     camera.rotation = Quaternion.Euler(new Vector3(camera.rotation.eulerAngles.x, 0f, 0f));
                 }
 
-                //camera.eulerAngles.x = Lerp(camera.eulerAngles.x, toTarget.x, sharpness * Time.deltaTime);
                 // This gives an "stretchy" damping where it moves fast when far
                 // away and slows down as it gets closer. You can also use 
                 // Quaternion.RotateTowards() to get a more consistent speed.
-            }
-            /*
-            {
-                Transform camera = Camera.main.transform;
-                Vector3 toTarget = target.position - camera.position;
-
-                // This constructs a rotation looking in the direction of our target,
-                Quaternion targetRotation = Quaternion.LookRotation(toTarget);
-
-                // This blends the target rotation in gradually.
-                // Keep sharpness between 0 and 1 - lower values are slower/softer.
-                
-                camera.rotation = Quaternion.Lerp(camera.rotation, targetRotation, sharpness);
-
-                // This gives an "stretchy" damping where it moves fast when far
-                // away and slows down as it gets closer. You can also use 
-                // Quaternion.RotateTowards() to get a more consistent speed.
-            }
-            */
+            }         
 
         }
 
