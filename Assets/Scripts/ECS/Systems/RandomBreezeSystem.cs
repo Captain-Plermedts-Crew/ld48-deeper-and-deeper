@@ -38,6 +38,7 @@ public class RandomBreezeSystem : SystemBase {
         float cos = math.cos(currentWindDirection);
         currentWindForce = new float3(cos, cos+sin, sin) * r.NextFloat(forceScalar); //x and z are normal rotation matrix, but y is just for funsies
 
+
         Entities
             .WithoutBurst()
             .WithAll<EmberTag>()
@@ -47,6 +48,12 @@ public class RandomBreezeSystem : SystemBase {
                     ref physicsVelocity,
                     physicsMass, 
                     currentWindForce + r.NextFloat3(-perEmberForceRange, perEmberForceRange)); 
+                
+                PhysicsComponentExtensions.ApplyAngularImpulse(
+                    ref physicsVelocity, 
+                    physicsMass, 
+                    r.NextFloat3(-.001f, .001f)); //apply angular impulse along the axis with the given amount
+
             })
             .Run();
 

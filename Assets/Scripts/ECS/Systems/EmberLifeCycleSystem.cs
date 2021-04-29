@@ -111,7 +111,7 @@ public class EmberLifeCycleSystem : SystemBase {
         //Transform stuff
         ecb.SetComponent(entity, new Translation { Value = position });
         ecb.SetComponent(entity, new Rotation { Value = orientation });
-        ecb.SetComponent(entity, new Scale { Value = .125f });
+        ecb.SetComponent(entity, new Scale { Value = .0625f });
         // ecb.SetComponent(entity, new Scale { Value = .5f });
 
         //custom stuff
@@ -155,8 +155,8 @@ public class EmberLifeCycleSystem : SystemBase {
         });
         ecb.SetComponent(entity, new PhysicsDamping()
         {
-            Linear = 0.5f,
-            Angular = 0.5f
+            Linear = .5f,
+            Angular = 10f
         });
 
         return entity;
