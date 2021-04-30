@@ -86,7 +86,7 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("reseting player");
         entityManager.SetComponentData(playerEntity, new Translation { Value = new float3(0.0f, 2.1f, 0.0f) });
-        entityManager.SetComponentData(playerEntity, new Temperature{Rate=0f, Value=200.6f});
+        entityManager.SetComponentData(playerEntity, new Temperature{Rate=0f, Value=TemperatureSystem.igniteTemp*5});
         //UpdateTemperatue(98.6f);
     }
 

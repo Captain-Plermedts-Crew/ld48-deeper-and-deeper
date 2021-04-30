@@ -58,13 +58,13 @@ public class TemperatureSystem : SystemBase {
             })
             .Run();
 
+        //end game if player has a frozen tag
         Entities
             .WithoutBurst()
-            .WithAll<Temperature, PlayerTag>()
-            .ForEach((in Temperature temp, in PlayerTag player) => {
+            .WithAll<PlayerTag, Temperature>()
+            .ForEach((Entity entity, in Temperature temp, in PlayerTag player) => {
                 GameManager.UpdateTemperatue(temp.Value);
-                if(temp.Value <= freezeTemp) //should probably change this to a game state system loooking for a Frozen tag on the player entity
-                { 
+                if (HasComponent<FrozenTag>(entity)){
                     GameManager.EndGame();
                 }
             })

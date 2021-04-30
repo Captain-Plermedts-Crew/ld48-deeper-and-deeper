@@ -23,6 +23,8 @@ public class EmberLifeCycleSystem : SystemBase {
 
     private static Random r = new Random(1241252);
 
+    private float emberCountdown = .3f;
+    public static float maxEmberCountdown = 0.1f;
 
     protected override void OnCreate() {
         base.OnCreate();
@@ -37,47 +39,57 @@ public class EmberLifeCycleSystem : SystemBase {
     // runs every frame
     protected override void OnUpdate()
     {
-        EntityCommandBuffer ecb = ECBS.CreateCommandBuffer();
-
-        float deltaTime = Time.DeltaTime;
-        float igniteTemp = TemperatureSystem.igniteTemp;
-
-        //Create new ember loop
-        Entities
-            .WithStructuralChanges()
-            .WithoutBurst()
-            .WithAll<IgnitedTag>()
-            .WithAll<Translation>()
-            .WithAll<Temperature>()
-            .WithNone<EmberTag>()
-            .ForEach((Entity entity, in Translation translation, in Temperature temperature) => 
-            {
-        
-                float roll = r.NextFloat(0, 1f);// + .01f*temperature.Value/igniteTemp;//chance in 0 to temperature.Value
-
-                if (roll > .99f){
-                    float3 newPos = new float3(translation.Value);
-                    newPos = new float3((float)newPos.x+(float)r.NextFloat(-.5f,.5f),
-                        (float)newPos.y+(float)r.NextFloat(.5f,.6f), 
-                        (float)newPos.z+(float)r.NextFloat(-.5f,.5f));
-                    // newPos.y=newPos.y+.5f;
-                    // newPos.x=newPos.z+
-
-                    EmberLifeCycleSystem.createEmber(
-                        ecb,
-                        emberArchetype,
-                        newPos,
-                        Quaternion.Euler(0, 0, 0),
-                        sphereMesh,
-                        fireMaterial,
-                        new float3(r.NextFloat(0,.5f), r.NextFloat(0,6f), r.NextFloat(0,.5f))
-                        );
-                }
-                
+        EntityCommandBuffer ecb = ECBS.CreateCommandBuffer();        
+        float deltaTime =  Time.DeltaTime;
 
 
-            })
-            .Run();
+        emberCountdown -= deltaTime;
+        //Check each entity for a chance to create an ember
+        //only create embers once the cooldown is reached
+        if (emberCountdown<=0){
+            emberCountdown = maxEmberCountdown; //reset cooldown
+
+            Entities
+                .WithStructuralChanges()
+                .WithoutBurst()
+                .WithAll<IgnitedTag>()
+                .WithAll<Translation>()
+                .WithAll<Temperature>()
+                .WithNone<EmberTag>()
+                .ForEach((Entity entity, in Translation translation, in Temperature temperature) => 
+                {
+                    float normalizedTemp = Mathf.Min(temperature.Value / TemperatureSystem.igniteTemp, 5f); //with a a max of 5, the max chance is 0.6224594;
+                    float maxChanceOfEmber = sigmoid(.1f, normalizedTemp);//.1f flattens out the sigmoid
+                    int numEmbers = ((int) normalizedTemp+1);  //hotter things create more embers
+
+                    //roll for each ember separately
+                    for (int i=0; i < numEmbers; i++){                        
+                        float chanceOfEmber = r.NextFloat(0f, maxChanceOfEmber); //roll from 0 to maxChanceOfEmber
+
+                        // Debug.Log(normalizedTemp + " " + maxChanceOfEmber + " " + ((int)normalizedTemp));
+                        if (chanceOfEmber > .55f ){ //
+                            float3 newPos = new float3(translation.Value);
+                            newPos = new float3((float)newPos.x+(float)r.NextFloat(-.5f,.5f),
+                                (float)newPos.y+(float)r.NextFloat(.5f,.6f), 
+                                (float)newPos.z+(float)r.NextFloat(-.5f,.5f));
+
+                            
+                            EmberLifeCycleSystem.createEmber(
+                                ecb,
+                                emberArchetype,
+                                newPos,
+                                Quaternion.Euler(0, 0, 0),
+                                sphereMesh,
+                                fireMaterial,
+                                new float3(r.NextFloat(0,.5f), r.NextFloat(0,6f), r.NextFloat(0,.5f)), //initial velocity
+                                r.NextFloat(temperature.Value,temperature.Value*10) //temperature
+                                );
+                        }
+                    }
+                })
+                .Run();
+        }
+
 
         //Destroy if temp is not high enough; also reduce temp of ember tag
         Entities
@@ -96,6 +108,10 @@ public class EmberLifeCycleSystem : SystemBase {
         ECBS.AddJobHandleForProducer(Dependency);
     }
 
+    private static float sigmoid(float a, float f){
+        return 1f / (1f + Mathf.Exp(-a*f));
+    }
+
     private static unsafe Entity createEmber(
         EntityCommandBuffer ecb,
         EntityArchetype archetype,
@@ -103,7 +119,8 @@ public class EmberLifeCycleSystem : SystemBase {
         quaternion orientation,
         Mesh mesh,
         UnityEngine.Material material,
-        float3 velocity){
+        float3 velocity,
+        float temperature){
 
 
         Entity entity = ecb.CreateEntity(archetype);
@@ -116,7 +133,7 @@ public class EmberLifeCycleSystem : SystemBase {
 
         //custom stuff
         int igniteTemp = (int)TemperatureSystem.igniteTemp;
-        ecb.SetComponent(entity, new Temperature{ Value = r.NextInt(igniteTemp*2,igniteTemp*5), Rate = igniteTemp });   
+        ecb.SetComponent(entity, new Temperature{ Value = temperature, Rate = igniteTemp });   
 
         //RenderMesh & Bounds   
         ecb.SetSharedComponent(entity, new RenderMesh 
