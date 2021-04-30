@@ -12,6 +12,8 @@ public class CameraController : MonoBehaviour
     public float MaxToClamp = 10f;
     public float MaxZoom = 10f;
     public float MinZoom = 1f;
+    public float sharpness = 0.9f;// This blends the Camera looi target rotation in gradually. Keep sharpness between 0 and 1 - lower values are slower/softer.
+    public bool Drunk = true;
 
     //public float maxZoomDist = 10;
     public float movementSpeed = 1f;
@@ -56,8 +58,7 @@ public class CameraController : MonoBehaviour
 
             //transform.LookAt(target); 
 
-
-            {
+             {
                 Transform camera = Camera.main.transform;
                 Vector3 toTarget = target.position - camera.position;
 
@@ -66,13 +67,19 @@ public class CameraController : MonoBehaviour
 
                 // This blends the target rotation in gradually.
                 // Keep sharpness between 0 and 1 - lower values are slower/softer.
-                float sharpness = 0.1f;
-                camera.rotation = Quaternion.Lerp(camera.rotation, targetRotation, sharpness);
+                
+                camera.rotation = Quaternion.Slerp(camera.rotation, targetRotation, sharpness*Time.deltaTime);
+                //Debug.Log(sharpness * Time.deltaTime);
+
+                if (!Drunk)
+                {
+                    camera.rotation = Quaternion.Euler(new Vector3(camera.rotation.eulerAngles.x, 0f, 0f));
+                }
 
                 // This gives an "stretchy" damping where it moves fast when far
                 // away and slows down as it gets closer. You can also use 
                 // Quaternion.RotateTowards() to get a more consistent speed.
-            }
+            }         
 
         }
 

@@ -134,7 +134,7 @@ public class GameManager : MonoBehaviour
     public static void UpdateTemperatue(float temp){
 
         Instance.temp = temp;
-        Instance.tempText.text = ""+Instance.temp;
+        Instance.tempText.text = ""+Instance.temp.ToString("F0");
     }
 
     private void OnDestroy()
