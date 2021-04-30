@@ -13,7 +13,7 @@ public class CameraController : MonoBehaviour
     public float MaxZoom = 10f;
     public float MinZoom = 1f;
     public float sharpness = 0.9f;// This blends the Camera looi target rotation in gradually. Keep sharpness between 0 and 1 - lower values are slower/softer.
-    public bool Drunk = true;
+    public bool Drunk = false;
 
     //public float maxZoomDist = 10;
     public float movementSpeed = 1f;

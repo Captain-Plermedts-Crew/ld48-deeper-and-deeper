@@ -39,7 +39,8 @@ public class FireWeaponSystem : SystemBase
             .ForEach((ref WeaponComponent weapon, ref UserInputData input, ref LocalToWorld localToWorld) => {
                 
                 weapon.shotTimer += deltaTime;
-                
+                weapon.shotTimer = 1000; // bypasses the shotTimer for a more flameThrower aesthetic; can fine-tune particle heat in the Temp system
+
                 if(input.IsFiring &&
                     weapon.shotTimer >= weapon.rateOfFire){
 

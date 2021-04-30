@@ -26,14 +26,16 @@ public class PlayerManager : MonoBehaviour
         alternateWeapon = !alternateWeapon;
 
         if(alternateWeapon){
-            if(weaponFXSource1 != null){
-                weaponFXSource1.pitch = UnityEngine.Random.Range(0.6f, 0.9f);
+           
+               
+            if (weaponFXSource1 != null){
+                weaponFXSource1.pitch = UnityEngine.Random.Range(0.6f, 0.8f);
                 weaponFXSource1.Play();
             }
 
         } else {
             if(weaponFXSource2 != null){
-                weaponFXSource2.pitch = UnityEngine.Random.Range(0.6f, 0.9f);
+                weaponFXSource2.pitch = UnityEngine.Random.Range(0.6f, 0.8f);
                 weaponFXSource2.Play();
             }
         }
