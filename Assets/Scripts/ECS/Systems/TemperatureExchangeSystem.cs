@@ -120,7 +120,7 @@ public class TemperatureExchangeSystem : SystemBase {
 
         findTargetBurstJob.Run(targetQuery); //runs as one big chunk (faster apparently, unless the function we're doing is particularly complicated)
         // Dependency = findTargetBurstJob.ScheduleParallel(targetQuery, 1, Dependency); //runs in parallel
-        targetEntityArray.Dispose();
+        // targetEntityArray.Dispose();
 
     }
 }
