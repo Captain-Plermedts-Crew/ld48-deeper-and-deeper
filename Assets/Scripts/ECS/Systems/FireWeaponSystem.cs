@@ -41,8 +41,7 @@ public class FireWeaponSystem : SystemBase
                 weapon.shotTimer += deltaTime;
                 weapon.shotTimer = 1000; // bypasses the shotTimer for a more flameThrower aesthetic; can fine-tune particle heat in the Temp system
 
-                if(input.IsFiring &&
-                    weapon.shotTimer >= weapon.rateOfFire){
+                if(input.IsFiring && weapon.shotTimer >= weapon.rateOfFire){
 
                     weapon.shotTimer = 0f;
 

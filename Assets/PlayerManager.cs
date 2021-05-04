@@ -6,6 +6,7 @@ public class PlayerManager : MonoBehaviour
 {
     public AudioSource weaponFXSource1;
     public AudioSource weaponFXSource2;
+    public AudioSource flameThrowerLoop;
 
     private bool alternateWeapon;
 
@@ -22,6 +23,14 @@ public class PlayerManager : MonoBehaviour
 
     public virtual void PlayWeaponFX()
     {
+        if (flameThrowerLoop != null)
+        {
+            if (!flameThrowerLoop.isPlaying)
+            {
+                //flameThrowerLoop.pitch = UnityEngine.Random.Range(0.8f, .83f);
+                flameThrowerLoop.Play();
+            }
+        }
         //this is dumb, but... whatever
         alternateWeapon = !alternateWeapon;
 
@@ -29,14 +38,20 @@ public class PlayerManager : MonoBehaviour
            
                
             if (weaponFXSource1 != null){
-                weaponFXSource1.pitch = UnityEngine.Random.Range(0.6f, 0.8f);
-                weaponFXSource1.Play();
+                if (!weaponFXSource1.isPlaying)
+                {
+                    weaponFXSource1.pitch = UnityEngine.Random.Range(0.6f, 0.8f);
+                    weaponFXSource1.Play();
+                }
             }
 
         } else {
             if(weaponFXSource2 != null){
-                weaponFXSource2.pitch = UnityEngine.Random.Range(0.6f, 0.8f);
-                weaponFXSource2.Play();
+                if (!weaponFXSource2.isPlaying)
+                {
+                    weaponFXSource2.pitch = UnityEngine.Random.Range(0.6f, 0.8f);
+                    weaponFXSource2.PlayDelayed(0.2f);
+                }
             }
         }
 
